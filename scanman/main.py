@@ -18,7 +18,6 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 import sys
 import yaml
-import pkg_resources
 
 from .scanner import Scanner
 
@@ -227,8 +226,6 @@ def main():
     except:
         print "Syntax: scanman <path/to/config.yaml>"
         exit(1)
-    kv = pkg_resources.resource_string('scanman', 'scanman.kv')
-    Builder.load_string(kv)
     ScanManApp(settings).run()
 
 if __name__ == '__main__':
