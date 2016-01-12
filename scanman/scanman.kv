@@ -1,0 +1,45 @@
+#:kivy 1.4
+
+<ScanMan>:
+    orientation: "horizontal"
+    scan_button: scan
+    status_label: status
+    preview_image: preview
+    profiles_container: profiles
+
+    BoxLayout:
+        size_hint: (.55, 1)
+        orientation: "vertical"
+        padding: 10
+
+        Image:
+            id: preview
+            size_hint: (1, 1)
+            allow_stretch: True
+            source: ""
+            canvas.after:
+                Line:
+                    rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+                    dash_offset: 5
+                    dash_length: 3
+
+        Label:
+            id: status
+            size_hint: (1, .2)
+            text: "Scanner is not connected."
+
+    BoxLayout:
+        size_hint: (.45, 1)
+        orientation: "vertical"
+        padding: 10
+
+        StackLayout:
+            id: profiles
+            spacing: 5
+
+        Button:
+            id: scan
+            size_hint: (1, None)
+            height: 200
+            text: "Scan"
+            disabled: True

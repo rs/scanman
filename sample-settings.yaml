@@ -1,0 +1,25 @@
+# SMTP server to use by default for all profiles
+smtp_server: 'smtp.gmail.com:587'
+smtp_tls: true
+smtp_credentials: ['username@gmail.com', 'secret']
+
+# Filename pattern
+filename: 'scan-%Y%m%d-%H%M%S'
+
+profiles:
+-
+    # Send scans to evernote using email to evernote feature
+    name: evernote
+    icon: /path/to/evernote.png
+    email_from: username@gmail.com
+    email_to: username.37a2f@m.evernote.com
+-
+    # Use IFTTT to send scans to Dropbox or any other IFTTT channel
+    name: dropbox-thru-ifttt
+    icon: /path/to/dropbox.png
+    email_from: john@icloud.com
+    email_to: trigger@recipe.ifttt.com
+    # Profile specific smtp account
+    smtp_server: 'smtp.mail.me.com:587'
+    smtp_tls: true
+    smtp_credentials: ['john@icloud.com', 'icloudsecret']
