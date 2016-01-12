@@ -197,7 +197,7 @@ class ScanManApp(App):
             print 'sending email', profile
             self.custom_status_text = 'Sending email…'
             s = smtplib.SMTP(profile.get('smtp_server', self.settings.get('smtp_server', 'localhost')))
-            if profile.get('smtp_tls', self.settings.smtp_tls):
+            if profile.get('smtp_tls', self.settings.get('smtp_tls', False)):
                 s.starttls()
             cred = profile.get('smtp_credentials', self.settings.get('smtp_credentials'))
             if cred:
