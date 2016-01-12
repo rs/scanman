@@ -2,7 +2,7 @@ from setuptools import setup
 setup(
     name='scanman',
     packages=['scanman'],
-    version='0.1',
+    version='0.2',
     description='A ScanSnap manager for Raspbery Pi',
     author='Olivier Poitrey',
     author_email='rs@rhapsodyk.net',
