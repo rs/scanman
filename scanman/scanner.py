@@ -1,7 +1,11 @@
 import sane
 import threading
-from Queue import Queue, Empty
 import time
+
+try:
+    from Queue import Queue, Empty
+except:
+    from queue import Queue, Empty
 
 
 class Scanner(object):
@@ -116,7 +120,6 @@ class Scanner(object):
                         q.join()
                         done()
                     else:
-                        print e
                         cancelled()
                     self.scanning = False
                     return
