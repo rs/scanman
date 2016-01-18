@@ -20,9 +20,9 @@ import yaml
 from .scanner import Scanner
 
 try:
-    from StringIO import StringIO
+    from StringIO import StringIO as BytesIO
 except:
-    from io import StringIO
+    from io import BytesIO
 
 
 class ScanMan(BoxLayout):
@@ -177,7 +177,7 @@ class ScanManApp(App):
             print('processing page {}'.format(page_index+1))
             self.custom_status_text = 'Processing page {}'.format(page_index+1)
             self._update_preview(image)
-            buf = StringIO()
+            buf = BytesIO()
             image.save(buf, format='JPEG', quality=75, optimize=True)
             width, height = image.size
             pdf_x, pdf_y = 72.0*width/float(dpi), 72.0*height/float(dpi)
