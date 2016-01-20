@@ -9,6 +9,7 @@ from kivy.clock import mainthread, Clock
 from kivy.properties import NumericProperty, ObjectProperty, BooleanProperty, StringProperty
 from kivy.uix.behaviors import ToggleButtonBehavior
 from kivy.graphics import Line, Color
+from kivy.logger import Logger
 from img2pdf import pdfdoc
 from datetime import datetime
 import smtplib
@@ -116,18 +117,18 @@ class ScanManApp(App):
         self.scanner.connected(set_connected)
 
     def on_connected(self, instance, value):
-        print('connected', value)
+        Logger.info('Scanman: connected: %s', value)
         self.reset_custom_status()
         self._update_status()
 
     def on_ready(self, instance, value):
-        print('ready', value)
+        Logger.info('Scanman: ready: %s', value)
         if not self.scanning:
             self.reset_custom_status()
         self._update_status()
 
     def on_scanning(self, instance, value):
-        print('scanning', value)
+        Logger.info('Scanman: scanning: %s', value)
         self._update_status()
 
     def on_custom_status_text(self, instance, value):
@@ -168,13 +169,13 @@ class ScanManApp(App):
         self.reset_custom_status()
         self.scanning = True
         profile = self.settings['profiles'][self.ui.active_profile()]
-        print('scan with profile', profile.get('name'))
+        Logger.info('Scanman: scanning with profile: %s', profile.get('name'))
 
         pdf = pdfdoc()
         dpi = self.scanner.dev.resolution
 
         def scan_processor(page_index, image):
-            print('processing page {}'.format(page_index+1))
+            Logger.info('Scanman: processing page %d', page_index+1)
             self.custom_status_text = 'Processing page {}'.format(page_index+1)
             self._update_preview(image)
             buf = BytesIO()
@@ -185,7 +186,7 @@ class ScanManApp(App):
             buf.close()
 
         def done():
-            print('processing document')
+            Logger.info('Scanman: processing document')
             self.custom_status_text = 'Processing document…'
             self._update_status()
             filename = datetime.now().strftime(self.settings.get('filename', '%Y%m%d-%H%M%S'))
@@ -196,7 +197,7 @@ class ScanManApp(App):
             att = MIMEApplication(pdf.tostring(), _subtype='pdf')
             att.add_header('content-disposition', 'attachment', filename=('utf-8', '', filename + '.pdf'))
             msg.attach(att)
-            print('sending email', profile)
+            Logger.info('Scanman: sending email: %s', profile)
             self.custom_status_text = 'Sending email…'
             s = smtplib.SMTP(profile.get('smtp_server', self.settings.get('smtp_server', 'localhost')))
             if profile.get('smtp_tls', self.settings.get('smtp_tls', False)):
@@ -218,7 +219,7 @@ class ScanManApp(App):
         self.scanner.scan(scan_processor, done, cancelled)
 
     def cancel(self):
-        print('cancelling')
+        Logger.info('Scanman: cancelling')
         self.scanning = False
         self.scanner.cancel()
 
