@@ -163,8 +163,11 @@ class Scanner(object):
     def scan_button(self, callback):
         def monitor_scan_button():
             while True:
-                if not self.scanning and self._is_scan_button_pressed():
-                    callback()
+                try:
+                    if not self.scanning and self._is_scan_button_pressed():
+                        callback()
+                except:
+                    pass
                 time.sleep(1)
         return threading.Thread(target=monitor_scan_button).start()
 
@@ -172,9 +175,12 @@ class Scanner(object):
         def monitor_page_loaded():
             while True:
                 if not self.scanning:
-                    state = self._is_page_loaded()
-                    if state is None:
-                        state = False
-                    callback(state)
+                    try:
+                        state = self._is_page_loaded()
+                        if state is None:
+                            state = False
+                        callback(state)
+                    except:
+                        pass
                 time.sleep(1)
         return threading.Thread(target=monitor_page_loaded).start()
